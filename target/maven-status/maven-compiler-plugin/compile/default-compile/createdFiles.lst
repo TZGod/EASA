@@ -1,0 +1,6 @@
+org\tzgod\EASA.class
+org\tzgod\encryption\Encrypt.class
+org\tzgod\annotation\Epw.class
+org\tzgod\annotation\Easa.class
+org\tzgod\annotation\Sign.class
+org\tzgod\aspect\MyAspect.class

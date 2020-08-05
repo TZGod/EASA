@@ -7,4 +7,6 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD ,ElementType.LOCAL_VARIABLE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Easa {
+    java.lang.Class<?>[] ConFig ()default {};
+
 }

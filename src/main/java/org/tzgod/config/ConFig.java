@@ -1,13 +1,12 @@
-package org.tzgod.encryption;
-
+package org.tzgod.config;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Encrypt {
-    public static String utils(String password)  {
+public class ConFig {
+    public  String Encrypt(String password)  {
 
         byte[] digest = null;
         try {
@@ -21,6 +20,4 @@ public class Encrypt {
         String md5Str = new BigInteger(1, digest).toString(16);
         return md5Str;
     }
-
-
 }

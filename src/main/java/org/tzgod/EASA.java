@@ -3,7 +3,7 @@ package org.tzgod;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.util.Assert;
-import org.tzgod.encryption.Encrypt;
+import org.tzgod.config.Encrypted;
 
 import java.lang.reflect.Method;
 
@@ -13,7 +13,7 @@ public class EASA {
     private Object[] args;
     private String PW;
 
-    public EASA(ProceedingJoinPoint joinPoint, Method method, Object[] args) {
+    public EASA(ProceedingJoinPoint joinPoint,Method method,Object[] args) {
         this.joinPoint=joinPoint;
         this.method = method;
         this.args = args;
@@ -31,7 +31,7 @@ public class EASA {
 
 
     //加密
-    public Object E(String password) {
+    public Object E(String password,Encrypted encrypted) {
         int A = 0;
 
         if (!(password == null || password.equals(""))) {
@@ -43,22 +43,16 @@ public class EASA {
                 }
             }
         }
-        args[A] = Encrypt.utils((String) args[A]);
+        args[A] = encrypted.Encrypted((String) args[A]);
         //加密替换
         this.PW = (String) args[A];
         return Run(args);
     }
 
     //登录验证
-    public Object S(String password) {
-        Assert.isTrue(this.E(password).equals(PW), "密码错误");
+    public Object S(String password,Encrypted encrypted) {
+        Assert.isTrue(this.E(password,encrypted).equals(PW), "密码错误");
         return "登录成功";
     }
-    public Object a() {
-        return null;
-    }
-
-    public Object A() {
-        return null;
-    }
 }
+

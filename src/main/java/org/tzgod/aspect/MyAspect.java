@@ -7,8 +7,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.tzgod.EASA;
+import org.tzgod.annotation.Easa;
 import org.tzgod.annotation.Epw;
 import org.tzgod.annotation.Sign;
+import org.tzgod.config.Encrypted;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -16,13 +18,12 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 public class MyAspect {
-    @Pointcut("@annotation(org.tzgod.annotation.Easa)")
+    @Pointcut("@annotation(com.tzgod.test.tzgod.annotation.Easa)")
     public  void Easa(){}
 
 
-
     @Around("Easa()")
-    public Object EasaSome(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object EasaSome(ProceedingJoinPoint joinPoint)  {
         Object O = null ;
         //获取方法签名
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -33,17 +34,21 @@ public class MyAspect {
         EASA encrypted = new EASA(joinPoint,method,args);
         //获取方法上所有注解
         Annotation[] annotations = method.getAnnotations();
+        Class<?>[] classes = method.getAnnotation(Easa.class).ConFig();
+        Encrypted encrypt = new Encrypted(classes[0]);
+
+
         //判断EASa    E加密 A认证 S登录 a授权
         for (int i = 0; i < annotations.length; i++) {
             if (annotations[i].annotationType().equals(Epw.class)){
                 //获取方法上注解参数
                 String password = method.getAnnotation(Epw.class).password();
-                O = encrypted.E(password);
+                O = encrypted.E(password,encrypt);
                 i=annotations.length;
             }else if (annotations[i].annotationType().equals(Sign.class)){
                 //获取方法上注解参数
                 String password = method.getAnnotation(Sign.class).password();
-                O = encrypted.S(password);
+                O = encrypted.S(password,encrypt);
                 i=annotations.length;
             }
         }
